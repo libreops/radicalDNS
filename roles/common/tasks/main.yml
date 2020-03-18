@@ -1,0 +1,42 @@
+---
+- name: Install Packages
+  apt:
+    pkg:
+    - mlocate
+    - vim
+    - bash-completion
+    - screenfetch
+    state: present
+
+- name: Set hostname
+  hostname: name={{ inventory_hostname }}
+
+- name: Reset timezone
+  timezone: name=UTC
+
+- name: Run locate
+  command: updatedb
+
+- name: Disable Ubuntu's motd scripts
+  file:
+    path: /etc/update-motd.d
+    mode: u=rwX,g=rX,o=rX
+    recurse: yes
+
+- name: Adjust motd message
+  file:
+    src: /usr/bin/screenfetch
+    dest: /etc/update-motd.d/90-screenfetch
+    owner: root
+    group: root
+    state: link
+
+- name: Enable UFW and reject everything
+  ufw:
+    state: enabled
+    policy: reject
+
+- name: UFW enable ssh
+  ufw:
+    rule: allow
+    port: "{{ hostvars[inventory_hostname].ansible_port }}"

@@ -1,0 +1,9 @@
+- hosts: radicaldns
+  become: yes
+  gather_facts: yes
+
+  vars:
+    WEBSITE: ""
+
+  roles:
+    - common
