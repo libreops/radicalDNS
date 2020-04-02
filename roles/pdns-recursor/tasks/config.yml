@@ -1,0 +1,27 @@
+---
+- name: PowerDNS Configuration
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: pdns
+    mode: 0644
+  with_items:
+    - {
+      src: "recursor.conf.j2",
+      dest: "/etc/powerdns/recursor.conf"
+      }
+
+- name: Check if root hints exist
+  stat:
+    path: "/etc/powerdns/root.hints"
+  register: stat_result
+
+- name: Update root hint
+  shell: |
+    set -o pipefail
+    dig . NS @75.127.96.89 | egrep -v '^;|^$' > /etc/powerdns/root.hints
+  args:
+    executable: /bin/bash
+  when: stat_result.stat.exists
+  notify: restart pdns-recursor

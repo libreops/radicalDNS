@@ -1,0 +1,15 @@
+---
+- name: Copy powerdns lua script
+  template:
+    src: pdns.lua.j2
+    dest: /etc/powerdns/pdns.lua
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure Powerdns Recursor reads hosts file
+  lineinfile:
+    path: /etc/powerdns/recursor.conf
+    regexp: '^lua-dns-script='
+    line: 'lua-dns-script=/etc/powerdns/pdns.lua'
+  notify: restart pdns-recursor
