@@ -40,3 +40,7 @@
   ufw:
     rule: allow
     port: "{{ hostvars[inventory_hostname].ansible_port }}"
+
+- import_tasks: swap.yml
+
+- import_tasks: dns.yml

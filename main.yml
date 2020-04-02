@@ -3,7 +3,7 @@
   gather_facts: yes
 
   vars:
-    WEBSITE: ""
-
+    DOMAIN: "libreops.cc"
   roles:
     - common
+    - pdns-recursor

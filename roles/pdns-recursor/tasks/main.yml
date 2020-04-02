@@ -1,0 +1,16 @@
+---
+- import_tasks: install.yml
+
+- import_tasks: testdns.yml
+
+- import_tasks: config.yml
+
+- import_tasks: cron.yml
+
+- import_tasks: ufw.yml
+
+- name: Ensure the VM is having itself as DNS Server
+  lineinfile:
+    path: /etc/resolv.conf
+    regexp: 'nameserver 9.9.9.9'
+    line: 'nameserver 127.0.0.1'

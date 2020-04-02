@@ -1,0 +1,13 @@
+---
+- name: Set DNS
+  copy:
+    src: files/resolv.conf
+    dest: /etc/resolv.conf
+    mode: 0644
+
+- name: Stop and disable resolv service
+  service:
+    name: systemd-resolved
+    enabled: no
+    state: stopped
+
