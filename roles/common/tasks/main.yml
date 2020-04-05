@@ -16,6 +16,7 @@
 
 - name: Run locate
   command: updatedb
+  when: True
 
 - name: Disable Ubuntu's motd scripts
   file:
