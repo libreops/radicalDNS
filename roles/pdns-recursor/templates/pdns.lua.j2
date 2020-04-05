@@ -1,5 +1,5 @@
-domainame = "test.{{DOMAIN}}"
-response  = "{{ ansible_default_ipv4.address }}"
+domainame = "{{ TEST_DOMAIN }}"
+response  = "{{ hostvars[inventory_hostname].ansible_host }}"
 
 function nxdomain(dq)
     if dq.qname:equal(domainame) then
