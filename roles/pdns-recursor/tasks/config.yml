@@ -23,5 +23,5 @@
     dig . NS @75.127.96.89 | egrep -v '^;|^$' > /etc/powerdns/root.hints
   args:
     executable: /bin/bash
-  when: stat_result.stat.exists
+  when: not stat_result.stat.exists
   notify: restart pdns-recursor

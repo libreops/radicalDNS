@@ -3,7 +3,9 @@
   gather_facts: yes
 
   vars:
-    DOMAIN: "libreops.cc"
+    TEST_DOMAIN: "radicaldns.libreops.cc"
+    IP: 88.198.92.222
+
   roles:
     - common
     - pdns-recursor

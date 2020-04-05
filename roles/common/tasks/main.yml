@@ -42,6 +42,16 @@
     rule: allow
     port: "{{ hostvars[inventory_hostname].ansible_port }}"
 
+- name: Set floating IP
+  template:
+    src: 60-floating-ip.cfg.j2
+    dest: /etc/network/interfaces.d/60-floating-ip.cfg
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart networking
+
 - import_tasks: swap.yml
 
 - import_tasks: dns.yml
