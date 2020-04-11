@@ -1,0 +1,16 @@
+---
+- name: Set DNS
+  copy:
+    src: files/resolv.conf
+    dest: /etc/resolv.conf
+    mode: 0644
+    attributes: +i
+
+- name: Check that powerdns recursor runs
+  wait_for: host=127.0.0.1 port=5353 timeout=3
+
+- name: Configure dnsdist
+  template:
+    src: dnsdist.conf.j2
+    dest: /etc/dnsdist/dnsdist.conf
+  notify: restart dnsdist

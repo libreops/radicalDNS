@@ -1,10 +1,10 @@
-allow-from=
+allow-from=127.0.0.0/8
 config-dir=/etc/powerdns
 hint-file=/etc/powerdns/root.hints
-local-address=0.0.0.0
+local-address=127.0.0.1
 quiet=yes
 setgid=pdns
 setuid=pdns
 lua-dns-script=/etc/powerdns/pdns.lua
-local-port=53
+local-port=5353
 any-to-tcp=no

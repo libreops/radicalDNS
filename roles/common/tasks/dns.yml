@@ -1,4 +1,9 @@
 ---
+- name: Ensure resolv file is writable
+  file:
+    path: /etc/resolv.conf
+    attributes: -i
+
 - name: Set DNS
   copy:
     src: files/resolv.conf
@@ -10,4 +15,3 @@
     name: systemd-resolved
     enabled: no
     state: stopped
-

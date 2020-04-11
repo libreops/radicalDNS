@@ -4,24 +4,17 @@
     url: https://repo.powerdns.com/FD380FBB-pub.asc
     state: present
 
-- name: Add powerdns repo
+- name: Add dnsdist repo
   apt_repository:
-    repo: deb [arch=amd64] http://repo.powerdns.com/ubuntu {{ pdnsrec_ver }} main
+    repo: deb [arch=amd64] http://repo.powerdns.com/ubuntu {{ dnsdist_ver }} main
     state: present
-
-- name: Ansible copy file to remote server
-  copy:
-    src: apt.pdns
-    dest: /etc/apt/preferences.d/pdns
 
 - name: Install dns packages
   apt:
     name: "{{ packages }}"
   vars:
     packages:
+    - dnsdist
     - dnsutils
-    - pdns-recursor
     state: present
-    # Do not start the service
-    policy_rc_d: 101
     update_cache: yes
