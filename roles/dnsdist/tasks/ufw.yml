@@ -2,4 +2,3 @@
   ufw:
     rule: allow
     port: "53"
-    proto: udp
