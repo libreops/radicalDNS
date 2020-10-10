@@ -8,5 +8,5 @@
 
   roles:
     - common
-    - pdns-recursor
+    - pdns_recursor
     - dnsdist
