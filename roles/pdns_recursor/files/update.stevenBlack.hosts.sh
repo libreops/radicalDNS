@@ -14,5 +14,5 @@ LINES=$(grep -c ^ /tmp/hosts.txt)
 
 # Check & restart if needed
 if [ "${LINES}" -gt "200" ] && [ "${DIFF_STATUS}" != "0" ]; then
-    mv -f /tmp/hosts.txt /etc/powerdns/hosts.txt && systemctl restart pdns-recursor
+  mv -f /tmp/hosts.txt /etc/powerdns/hosts.txt && systemctl restart pdns-recursor
 fi
