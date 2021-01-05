@@ -42,18 +42,10 @@
     rule: allow
     port: "{{ hostvars[inventory_hostname].ansible_port }}"
 
-- name: Disable IPv6 via UFW
-  lineinfile:
-    path: /etc/default/ufw
-    regexp: '^IPV6='
-    line: 'IPV6=no'
-  notify:
-    - restart ufw
-
 - name: Set floating IP
   template:
-    src: 60-floating-ip.cfg.j2
-    dest: /etc/network/interfaces.d/60-floating-ip.cfg
+    src: 60-floating-ip.yaml.j2
+    dest: /etc/netplan/60-floating-ip.yaml
     owner: root
     group: root
     mode: 0644
