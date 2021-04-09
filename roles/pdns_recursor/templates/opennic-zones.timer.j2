@@ -1,0 +1,10 @@
+[Unit]
+Description=Update Opennic zones every hour
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

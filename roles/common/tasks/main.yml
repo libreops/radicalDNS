@@ -6,6 +6,7 @@
     - vim
     - bash-completion
     - screenfetch
+    - postfix
     state: present
 
 - name: Set hostname
@@ -51,6 +52,8 @@
     mode: 0644
   notify:
     - restart networking
+
+- import_tasks: mail.yml
 
 - import_tasks: swap.yml
 

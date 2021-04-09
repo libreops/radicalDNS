@@ -26,7 +26,7 @@
     line: "/swap.img none  swap  sw  0 0"
   when: stat_result.stat.exists
 
-- name: Mount swap file
+- name: Activate swap
   command: |
     swapon -a
   when: stat_result.stat.exists

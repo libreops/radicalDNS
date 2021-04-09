@@ -10,3 +10,4 @@ setuid=pdns
 lua-dns-script=/etc/powerdns/pdns.lua
 local-port=5353
 any-to-tcp=no
+auth-zones={% for tld in opennic_tlds %}{{ tld }}=/etc/powerdns/zones.d/{{ tld }}.conf{% if not loop.last %},{% endif %}{% endfor %}
