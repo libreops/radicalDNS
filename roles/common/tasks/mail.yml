@@ -1,0 +1,39 @@
+
+- name: Add generic systemd mailer
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - {
+      src: "status-email-root@.service",
+      dest: "/etc/systemd/system/status-email-root@.service",
+      mode: "644"
+    }
+    - {
+      src: "systemd-email.sh",
+      dest: "/usr/local/bin/systemd-email.sh",
+      mode: "755"
+    }
+
+- name: Add team email for root
+  template:
+    src: "aliases.j2"
+    dest: "/etc/aliases"
+    owner: root
+    group: root
+    mode: "644"
+  with_items:
+    - {
+      src: "main.cf.j2",
+      dest: "/etc/postfix/main.cf",
+    }
+    - {
+      src: "aliases.j2",
+      dest: "/etc/aliases",
+    }
+  notify:
+    - generate aliases
+    - restart postfix

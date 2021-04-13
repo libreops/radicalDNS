@@ -4,7 +4,7 @@
     url: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
     dest: /etc/powerdns/hosts.txt
     force: yes
-    mode: '0644'
+    mode: "644"
     owner: pdns
     group: pdns
 
@@ -12,7 +12,7 @@
   copy:
     src: update.stevenBlack.hosts.sh
     dest: /usr/local/bin/update.stevenBlack.hosts.sh
-    mode: 0750
+    mode: "750"
 
 - name: StevenBlack Hosts Renewal
   cron:

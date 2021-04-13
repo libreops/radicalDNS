@@ -3,7 +3,7 @@
   copy:
     src: update.root.hint.sh
     dest: /usr/local/bin/update.root.hint.sh
-    mode: 0750
+    mode: "750"
 
 - name: OpenNic NS Renewal
   cron:

@@ -6,6 +6,7 @@
     - vim
     - bash-completion
     - screenfetch
+    - postfix
     state: present
 
 - name: Set hostname
@@ -48,9 +49,11 @@
     dest: /etc/netplan/60-floating-ip.yaml
     owner: root
     group: root
-    mode: 0644
+    mode: "644"
   notify:
     - restart networking
+
+- import_tasks: mail.yml
 
 - import_tasks: swap.yml
 

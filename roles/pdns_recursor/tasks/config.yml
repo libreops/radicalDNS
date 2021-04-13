@@ -1,16 +1,11 @@
 ---
 - name: PowerDNS Configuration
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: recursor.conf.j2
+    dest: /etc/powerdns/recursor.conf
     owner: root
     group: pdns
-    mode: 0644
-  with_items:
-    - {
-      src: "recursor.conf.j2",
-      dest: "/etc/powerdns/recursor.conf"
-      }
+    mode: "644"
 
 - name: Check if root hints exist
   stat:
@@ -25,4 +20,49 @@
   args:
     executable: /bin/bash
   when: not stat_result.stat.exists
+
+- name: Copy Opennic zones scripts
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - {
+      src: "opennic-zones.sh.j2",
+      dest: "/usr/local/bin/opennic-zones.sh",
+      mode: "755"
+    }
+    - {
+      src: "opennic-zones.timer.j2",
+      dest: "/etc/systemd/system/opennic-zones.timer",
+      mode: "644"
+    }
+    - {
+      src: "opennic-zones.service.j2",
+      dest: "/etc/systemd/system/opennic-zones.service",
+      mode: "644"
+    }
+
+- name: Create zones directory
+  file:
+    path: /etc/powerdns/zones.d/
+    state: directory
+    owner: pdns
+    group: pdns
+    mode: "755"
+
+- name: Enable Openic zones timer
+  systemd:
+    name: opennic-zones.timer
+    state: started
+    enabled: yes
+
+- name: Update zones
+  command: /usr/local/bin/opennic-zones.sh
+  args:
+    creates: /etc/powerdns/zones.d/opennic.glue.conf
+  become: yes
+  become_user: pdns
   notify: restart pdns-recursor

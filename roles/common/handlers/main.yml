@@ -7,3 +7,11 @@
   service:
     name: ufw
     state: restarted
+
+- name: restart postfix
+  service:
+    name: postfix
+    state: restarted
+
+- name: generate aliases
+  command: /usr/bin/newaliases

@@ -3,7 +3,7 @@
   copy:
     src: files/resolv.conf
     dest: /etc/resolv.conf
-    mode: 0644
+    mode: "644"
     attributes: +i
 
 - name: Check that powerdns recursor runs
@@ -13,5 +13,5 @@
   template:
     src: dnsdist.conf.j2
     dest: /etc/dnsdist/dnsdist.conf
-    mode: 0644
+    mode: "644"
   notify: restart dnsdist
