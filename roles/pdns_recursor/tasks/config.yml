@@ -5,7 +5,7 @@
     dest: /etc/powerdns/recursor.conf
     owner: root
     group: pdns
-    mode: 0644
+    mode: "644"
 
 - name: Check if root hints exist
   stat:
@@ -32,17 +32,17 @@
     - {
       src: "opennic-zones.sh.j2",
       dest: "/usr/local/bin/opennic-zones.sh",
-      mode: 0755
+      mode: "755"
     }
     - {
       src: "opennic-zones.timer.j2",
       dest: "/etc/systemd/system/opennic-zones.timer",
-      mode: 0644
+      mode: "644"
     }
     - {
       src: "opennic-zones.service.j2",
       dest: "/etc/systemd/system/opennic-zones.service",
-      mode: 0644
+      mode: "644"
     }
 
 - name: Create zones directory
@@ -51,7 +51,7 @@
     state: directory
     owner: pdns
     group: pdns
-    mode: 0755
+    mode: "755"
 
 - name: Enable Openic zones timer
   systemd:

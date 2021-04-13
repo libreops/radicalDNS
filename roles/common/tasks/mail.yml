@@ -10,12 +10,12 @@
     - {
       src: "status-email-root@.service",
       dest: "/etc/systemd/system/status-email-root@.service",
-      mode: 0644
+      mode: "644"
     }
     - {
       src: "systemd-email.sh",
       dest: "/usr/local/bin/systemd-email.sh",
-      mode: 0755
+      mode: "755"
     }
 
 - name: Add team email for root
@@ -24,7 +24,7 @@
     dest: "/etc/aliases"
     owner: root
     group: root
-    mode: 0644
+    mode: "644"
   with_items:
     - {
       src: "main.cf.j2",

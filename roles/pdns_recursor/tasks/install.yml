@@ -13,7 +13,7 @@
   copy:
     src: apt.pdns
     dest: /etc/apt/preferences.d/pdns
-    mode: 0644
+    mode: "644"
 
 - name: Install dns packages
   apt:

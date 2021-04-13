@@ -8,7 +8,7 @@
   copy:
     src: files/resolv.conf
     dest: /etc/resolv.conf
-    mode: 0644
+    mode: "644"
 
 - name: Stop and disable resolv service
   service:
