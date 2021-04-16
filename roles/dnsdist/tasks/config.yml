@@ -1,7 +1,7 @@
 ---
 - name: Set DNS
-  copy:
-    src: files/resolv.conf
+  template:
+    src: resolv.conf.j2
     dest: /etc/resolv.conf
     mode: "644"
     attributes: +i
