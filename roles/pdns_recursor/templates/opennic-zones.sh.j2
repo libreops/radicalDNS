@@ -2,5 +2,5 @@
 # {{ ansible_managed }}
 
 {% for tld in opennic_tlds %}
-  dig axfr @ns0.opennic.glue. {{ tld }}. >/etc/powerdns/zones.d/{{ tld }}.conf
+  dig axfr @ns2.opennic.glue. {{ tld }}. >/etc/powerdns/zones.d/{{ tld }}.conf
 {% endfor %}

@@ -1,4 +1,4 @@
-
+---
 - name: Add generic systemd mailer
   copy:
     src: "{{ item.src }}"
