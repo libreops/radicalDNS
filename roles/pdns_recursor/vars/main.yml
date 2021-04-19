@@ -1,7 +1,9 @@
 opennic_tlds:
   - 'bbs'
   - 'chan'
+  - 'cyb'
   - 'dyn'
+  - 'epic'
   - 'free'
   - 'fur'
   - 'geek'
@@ -16,4 +18,3 @@ opennic_tlds:
   - 'parody'
   - 'pirate'
   - 'o'
-  - 'epic'
