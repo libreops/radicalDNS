@@ -1,4 +1,5 @@
 opennic_tlds:
+  - 'dns.opennic.glue'
   - 'bbs'
   - 'chan'
   - 'cyb'
