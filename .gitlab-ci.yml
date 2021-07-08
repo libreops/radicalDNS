@@ -1,4 +1,4 @@
-image: alpine
+image: ubuntu:20.04
 
 stages:
   - test
@@ -6,7 +6,11 @@ stages:
 test:
   stage: test
   script:
-    - apk add ansible-lint shellcheck shfmt
+    - apt-get update
+    - apt-get -y install ansible-lint shellcheck curl jq
+    - SHFMT_LATEST=$(curl -sL https://api.github.com/repos/mvdan/sh/releases/latest | jq -r '.assets[].browser_download_url | select( contains("linux_amd64"))')
+    - curl -sL ${SHFMT_LATEST} -o /usr/local/bin/shfmt
+    - chmod +x /usr/local/bin/shfmt
     - ansible-lint main.yml
     - shfmt -f . | xargs shellcheck -x
     - shfmt -i 2 -ci -d .
