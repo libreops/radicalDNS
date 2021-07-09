@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Root hint
+OnFailure=status-email-root@root-hints.service
+
+[Service]
+Type=oneshot
+User=pdns
+ExecStart=/usr/local/bin/root-hints.sh
+PrivateTmp=true

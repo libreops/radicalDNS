@@ -1,4 +1,5 @@
 #!/bin/bash
+# {{ ansible_managed }}
 
 # Get OpenNic Tier1 NS
 dig . NS @ns0.opennic.glue | grep -Ev '^;|^$' | sort -u -V | column -t >/tmp/root.hint

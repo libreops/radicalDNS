@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Update root hints every week
+
+[Timer]
+OnCalendar=weekly
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target
