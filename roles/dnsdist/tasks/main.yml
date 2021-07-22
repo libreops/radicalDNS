@@ -4,3 +4,10 @@
 - import_tasks: config.yml
 
 - import_tasks: ufw.yml
+
+- name: Set local DNS
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: "644"
+    attributes: +i
