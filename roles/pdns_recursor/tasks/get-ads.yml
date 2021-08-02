@@ -8,14 +8,31 @@
     owner: pdns
     group: pdns
 
-- name: Copy Update StevenBlack Hosts Script
+- name: Copy update StevenBlack hosts script
   copy:
-    src: update.stevenBlack.hosts.sh
+    src: update.stevenblack.hosts.sh
     dest: /usr/local/bin/update.stevenBlack.hosts.sh
     mode: "750"
 
-- name: StevenBlack Hosts Renewal
-  cron:
-    name: "a job for renew StevenBlack Hosts"
-    special_time: weekly
-    job: "/usr/local/bin/update.stevenBlack.hosts.sh"
+- name: Add StevenBlack hosts renewal timer
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "644"
+  with_items:
+    - {
+      src: "stevenblack-hosts.timer.j2",
+      dest: "/etc/systemd/system/stevenblack-hosts.timer",
+    }
+    - {
+      src: "stevenblack-hosts.service.j2",
+      dest: "/etc/systemd/system/stevenblack-hosts.service",
+    }
+
+- name: Enable StevenBlack hosts renewal timer
+  systemd:
+    name: stevenblack-hosts.timer
+    state: started
+    enabled: yes

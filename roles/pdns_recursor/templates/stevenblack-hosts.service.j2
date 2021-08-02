@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Update StevenBlack hosts
+OnFailure=status-email-root@stevenblack-hosts.service
+
+[Service]
+Type=oneshot
+User=pdns
+ExecStart=/usr/local/bin/update.stevenBlack.hosts.sh
+PrivateTmp=true

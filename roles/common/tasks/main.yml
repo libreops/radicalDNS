@@ -10,7 +10,7 @@
     state: present
 
 - name: Set hostname
-  hostname: name={{ inventory_hostname }}
+  hostname: name={{ inventory_hostname }}.libreops.cc
 
 - name: Reset timezone
   timezone: name=UTC
@@ -50,6 +50,7 @@
     owner: root
     group: root
     mode: "644"
+  when: hostvars[inventory_hostname].floating_ip
   notify:
     - restart networking
 
