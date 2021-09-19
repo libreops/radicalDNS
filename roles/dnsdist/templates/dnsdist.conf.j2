@@ -4,8 +4,8 @@ setACL("0.0.0.0/0")
 addACL("::/0")
 
 -- accept DNS queries on UDP and TCP
-setLocal("{{ IP4 }}:53")
-addLocal("[{{ IP6 }}]:53")
+setLocal("{{ hostvars[inventory_hostname].ansible_host }}:53")
+addLocal("[{{ hostvars[inventory_hostname].ipv6 }}]:53")
 
 -- fwd queries to:
 newServer({address="127.0.0.1:5353"})

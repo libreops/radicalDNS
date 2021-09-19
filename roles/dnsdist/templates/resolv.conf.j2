@@ -1,2 +1,2 @@
-nameserver {{ IP4 }}
+nameserver {{ hostvars[inventory_hostname].ansible_host }}
 options edns0

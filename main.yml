@@ -7,8 +7,6 @@
 
   vars:
     TEST_DOMAIN: "test.libreops.cc"
-    IP4: 88.198.92.222
-    IP6: 2a01:4f8:1c0c:82c0::1
 
   roles:
     - common

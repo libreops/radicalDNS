@@ -4,5 +4,5 @@ network:
   ethernets:
     eth0:
       addresses:
-      - {{ IP4 }}/32
-      - {{ IP6 }}/64
+      - {{ hostvars[inventory_hostname].ansible_host }}/32
+      - {{ hostvars[inventory_hostname].ipv6 }}/64
