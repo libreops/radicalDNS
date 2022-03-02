@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+#
+# Requirements:
+#   beautifulsoup4 (python3-bs4)
+#   requests (python3-requests)
+#
+# Gets IPv4 address as a parameter and checks its status
+# by parsing the Opennic server list.
+#
+# {{ ansible_managed }}
+
+from bs4 import BeautifulSoup
+import requests
+import smtplib
+import sys
+import urllib3
+
+SERVERS_URL='https://servers.opennic.org/'
+HOSTNAME='{{ inventory_hostname }}.libreops.cc'
+IP='{{ hostvars[inventory_hostname].ansible_host }}'
+SENDER_EMAIL='noreply@libreops.cc'
+RECEIVER_EMAIL='{{ team_email }}'
+
+
+def error_handler():
+    smtp_server=smtplib.SMTP('localhost', 25, HOSTNAME)
+    smtp_server.ehlo()
+    smtp_server.starttls()
+    smtp_server.ehlo()
+
+    msg = ('From: {0} \r\nTo: {1}\r\nSubject: [libreops] {2} Opennic report\r\n'
+          'Something is off with server {2}. Check {3}').format(
+              SENDER_EMAIL, RECEIVER_EMAIL, HOSTNAME, SERVERS_URL)
+
+    smtp_server.sendmail(SENDER_EMAIL, RECEIVER_EMAIL, msg)
+
+    smtp_server.quit()
+
+
+def find_element(soup):
+    """
+    Navigate through the soup.
+    """
+    server_list = soup.find(id='srvlist')
+
+    for div in server_list.find_all('div'):
+        for p in div.find_all('p'):
+            servers = p.find_all(attrs={'class': 'ipv4'})
+            for server in servers:
+                if server.contents[0] == IP:
+                    element = server.parent
+
+    try:
+        return element
+    except UnboundLocalError:
+        return False
+
+
+if __name__ == '__main__':
+    # Suppress Certificate warning when TLS verification is disabled.
+    # OpenNIC servers list website certificate is currently invalid for Python requests.
+    urllib3.disable_warnings()
+
+    # Get content soup
+    html = requests.get(SERVERS_URL, verify=False)
+    soup = BeautifulSoup(html.text, 'html.parser')
+
+    element = find_element(soup)
+    if not element:
+        error_handler()
+        sys.exit(1)
