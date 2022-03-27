@@ -1,6 +1,13 @@
 #!/bin/bash
 # {{ ansible_managed }}
 
+# Retrive zone.
+# Override only if response is above 100 Bytes.
 {% for tld in opennic_tlds %}
-  dig axfr @ns2.opennic.glue. {{ tld }}. >/etc/powerdns/zones.d/{{ tld }}.conf
+  zone=$(dig axfr +noall +answer +additional @ns2.opennic.glue. {{ tld }}.)
+  if [ ${#zone} -gt 100 ]; then
+    echo "$zone" >/etc/powerdns/zones.d/{{ tld }}.conf
+  fi
 {% endfor %}
+
+systemctl restart pdns-recursor
