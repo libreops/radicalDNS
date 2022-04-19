@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Check server with Opennic list status
+OnFailure=status-email-root@opennic-check.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/opennic-check.py
+PrivateTmp=true
