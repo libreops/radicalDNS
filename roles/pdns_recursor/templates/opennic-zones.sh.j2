@@ -5,7 +5,8 @@
 # Override only if response is above 100 Bytes.
 {% for tld in opennic_tlds %}
   zone=$(dig axfr +noall +answer +additional @ns2.opennic.glue. {{ tld }}.)
-  if [ ${#zone} -gt 100 ]; then
+  size=$(echo "$zone" | wc -c)
+  if [ "$size" -gt 100 ]; then
     echo "$zone" >/etc/powerdns/zones.d/{{ tld }}.conf
   fi
 {% endfor %}
