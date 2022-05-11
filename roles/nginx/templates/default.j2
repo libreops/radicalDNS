@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name _;
+  return 301 https://libreops.cc/radicaldns.html;
+}
+
+server {
+  listen 443 ssl http2 default_server;
+  listen [::]:443 ssl http2 default_server;
+  server_name _;
+
+  ssl_certificate /etc/letsencrypt/live/{{ inventory_hostname }}.libreops.cc/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/{{ inventory_hostname }}.libreops.cc/privkey.pem;
+
+  location / {
+    return 301 https://libreops.cc/radicaldns.html;
+  }
+
+  include /etc/nginx/snippets/node_exporter[.]conf;
+}

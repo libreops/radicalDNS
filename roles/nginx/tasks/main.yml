@@ -1,0 +1,66 @@
+---
+- name: Install packages
+  apt:
+    pkg:
+    - nginx
+    - certbot
+    state: present
+
+- name: Copy configuration files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "644"
+  with_items:
+    - {
+      src: "nginx.conf.j2",
+      dest: "/etc/nginx/nginx.conf"
+    }
+    - {
+      src: "default.j2",
+      dest: "/etc/nginx/sites-available/default"
+    }
+    - {
+      src: "ssl.conf.j2",
+      dest: "/etc/nginx/conf.d/ssl.conf"
+    }
+
+- name: Enable sites
+  file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+
+- name: Create dhparam.pem if not exists
+  command: >
+    openssl dhparam -out /etc/ssl/dhparam.pem 2048 creates=/etc/ssl/dhparam.pem
+
+- name: Enable http ports on firewall
+  ufw:
+    rule: allow
+    name: "Nginx Full"
+
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/letsencrypt/live/{{ inventory_hostname }}.libreops.cc/cert.pem
+  register: letsencrypt_exists
+
+- name: Stop nginx service
+  systemd:
+    name: nginx
+    state: stopped
+  when: not letsencrypt_exists.stat.exists
+
+- name: Create certificate
+  command: |
+    certbot certonly --standalone --noninteractive --agree-tos \
+      --email {{ noreply_email }} -d {{ inventory_hostname }}.libreops.cc
+  when: not letsencrypt_exists.stat.exists
+
+- name: Start nginx service
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
