@@ -6,21 +6,39 @@
     - apache2-utils
     - python3-passlib
 
-- name: Generate htpasswd file
+- name: Generate htpasswd entries
   htpasswd:
-    path: "{{ node_exporter_path }}"
-    name: "{{ node_exporter_username }}"
-    password: "{{ node_exporter_password }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    path: "{{ auth_path }}"
     owner: root
     group: www-data
     mode: "640"
+  with_items:
+    - {
+      name: "{{ node_exporter_username }}",
+      password: "{{ node_exporter_password }}"
+    }
+    - {
+      name: "{{ dnsdist_web_username }}",
+      password: "{{ dnsdist_web_password }}"
+    }
 
-- name: Copy nginx snippet
+- name: Copy nginx snippets
   template:
-    src: "node_exporter.conf.j2"
-    dest: "/etc/nginx/snippets/node_exporter.conf"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: "644"
+  with_items:
+    - {
+      src: "node_exporter.conf.j2",
+      dest: "/etc/nginx/snippets/node_exporter.conf"
+    }
+    - {
+      src: "dnsdist.conf.j2",
+      dest: "/etc/nginx/snippets/dnsdist.conf"
+    }
   notify:
     - restart nginx

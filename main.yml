@@ -13,3 +13,5 @@
     - pdns_recursor
     - dnsdist
     - opennic
+    - nginx
+    - monitoring
