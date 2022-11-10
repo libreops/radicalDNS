@@ -6,28 +6,28 @@ pid /run/nginx.pid;
 include /etc/nginx/modules-enabled/*.conf;
 
 events {
-    worker_connections 768;
+  worker_connections 768;
 }
 
 http {
-    # Generic
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
-    gzip on;
-    server_names_hash_bucket_size 256;
+  # Generic
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+  gzip on;
+  server_names_hash_bucket_size 256;
 
-    # Logs
-    access_log off;
-    error_log /dev/null crit;
+  # Logs
+  access_log off;
+  error_log /dev/null crit;
 
-    # Mimes
-    include /etc/nginx/mime.types;
-    default_type application/octet-stream;
+  # Mimes
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
 
-    # Includes
-    include /etc/nginx/conf.d/*.conf;
-    include /etc/nginx/sites-enabled/*;
+  # Includes
+  include /etc/nginx/conf.d/*.conf;
+  include /etc/nginx/sites-enabled/*;
 }

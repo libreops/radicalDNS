@@ -4,7 +4,15 @@ server {
   listen 80 default_server;
   listen [::]:80 default_server;
   server_name _;
-  return 301 https://libreops.cc/radicaldns.html;
+
+  location ^~ /.well-known/acme-challenge/ {
+    root /var/www/letsencrypt;
+    default_type "text/plain";
+  }
+
+  location / {
+    return 301 https://libreops.cc/radicaldns.html;
+  }
 }
 
 server {
@@ -14,6 +22,11 @@ server {
 
   ssl_certificate /etc/letsencrypt/live/{{ inventory_hostname }}.libreops.cc/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/{{ inventory_hostname }}.libreops.cc/privkey.pem;
+
+  location ^~ /.well-known/acme-challenge/ {
+    root /var/www/letsencrypt;
+    default_type "text/plain";
+  }
 
   location / {
     return 301 https://libreops.cc/radicaldns.html;
